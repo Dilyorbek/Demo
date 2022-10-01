@@ -12,10 +12,10 @@ import uz.msit.demo.users.domain.usecase.GetUsersUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class UsersViewModel @Inject constructor(private val getUsersUseCase: GetUsersUseCase) : ViewModel() {
+open class UsersViewModel @Inject constructor(private val getUsersUseCase: GetUsersUseCase) : ViewModel() {
 
     private val _state = mutableStateOf(UsersState())
-    val state: State<UsersState> = _state
+    open val state: State<UsersState> = _state
 
     private var getUsersJob: Job? = null
 
@@ -23,7 +23,7 @@ class UsersViewModel @Inject constructor(private val getUsersUseCase: GetUsersUs
         onEvent(UsersEvent.GetAll)
     }
 
-    fun onEvent(event: UsersEvent) {
+    open fun onEvent(event: UsersEvent) {
         when (event) {
             is UsersEvent.GetAll -> {
                 getUsers()

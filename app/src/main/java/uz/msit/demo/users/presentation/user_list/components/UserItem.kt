@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -21,7 +22,7 @@ import uz.msit.demo.users.domain.model.User
 @Composable
 fun UserItem(
     user: User,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.testTag("UserItem")
 ) {
     Row(
         modifier = modifier,
@@ -30,7 +31,7 @@ fun UserItem(
         AsyncImage(
             model = user.photo,
             placeholder = painterResource(R.drawable.ic_launcher_foreground),
-            contentDescription = "user photo",
+            contentDescription = "user_photo",
             modifier = Modifier
                 .size(70.dp)
                 .clip(CircleShape)
