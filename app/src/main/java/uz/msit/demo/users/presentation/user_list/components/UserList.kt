@@ -45,6 +45,6 @@ fun UserList(
 fun UserListPreview() {
     val users = listOf(User(1, "sasa", "vava"), User(2, "vava", "dada"))
     UserList(users, {
-        Timber.d("Item:${it.username}")
+        Timber.d("Item:${it.login}")
     })
 }

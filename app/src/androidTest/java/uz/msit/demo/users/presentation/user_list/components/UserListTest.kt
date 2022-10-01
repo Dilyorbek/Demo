@@ -34,7 +34,7 @@ class UserListTest {
             .onChildren()
             .assertCountEquals(testUsers.size)
             .onFirst()
-            .assert(hasText(expectedUser.username)).performClick()
+            .assert(hasText(expectedUser.login)).performClick()
 
         assertEquals(expectedUser, clickedItem)
     }

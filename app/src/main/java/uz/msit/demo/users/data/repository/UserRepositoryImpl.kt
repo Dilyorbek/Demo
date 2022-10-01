@@ -18,5 +18,7 @@ class UserRepositoryImpl @Inject constructor(private val remoteDataSource: UserR
         } catch (ex: GetUsersFailure) {
             emit(Left(ex))
         }
+        Result.success(emptyList<User>())
+        Result.failure<GetUsersFailure>(GetUsersFailure.UnknownError)
     }
 }

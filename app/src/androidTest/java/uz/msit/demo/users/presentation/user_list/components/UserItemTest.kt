@@ -25,7 +25,7 @@ class UserItemTest {
 
     @Test
     fun did_display_username_and_photo() {
-        composeTestRule.onNodeWithText(user.username).assertIsDisplayed()
+        composeTestRule.onNodeWithText(user.login).assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("user_photo").assertIsDisplayed()
     }
 }

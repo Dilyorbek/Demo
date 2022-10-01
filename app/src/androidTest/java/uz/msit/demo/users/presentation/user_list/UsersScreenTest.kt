@@ -62,7 +62,7 @@ class UsersScreenTest {
 
     @Test
     fun did_navigation_will_called() {
-        val expectedUser = testUsers.first().username
+        val expectedUser = testUsers.first().login
         fakeUsersViewModel.setState(UsersState(testUsers))
 
         composeTestRule.onNodeWithText(expectedUser).performClick()

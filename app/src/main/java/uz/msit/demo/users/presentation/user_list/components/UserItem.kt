@@ -29,7 +29,7 @@ fun UserItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
-            model = user.photo,
+            model = user.avatar_url,
             placeholder = painterResource(R.drawable.ic_launcher_foreground),
             contentDescription = "user_photo",
             modifier = Modifier
@@ -38,7 +38,7 @@ fun UserItem(
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = user.username,
+            text = user.login,
             fontWeight = FontWeight.SemiBold,
             fontSize = 16.sp,
             color = MaterialTheme.colors.onBackground,

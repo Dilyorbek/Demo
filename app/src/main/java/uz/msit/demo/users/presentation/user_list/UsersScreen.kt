@@ -30,7 +30,7 @@ fun UsersScreen(
     ) {
         if (state.users.isNotEmpty()) {
             UserList(state.users, onItemClick = {
-                navigateToDetails(it.username)
+                navigateToDetails(it.login)
             })
         } else if (state.isLoading) {
             Loading()
@@ -45,12 +45,3 @@ fun UsersScreen(
         }
     }
 }
-
-@Preview
-@Composable
-fun UserListScreenPreview() {
-    UsersScreen({
-        Timber.d("navigateToDetails:${it}")
-    })
-}
-
