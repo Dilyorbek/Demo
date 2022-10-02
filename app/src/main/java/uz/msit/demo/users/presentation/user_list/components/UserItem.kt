@@ -1,6 +1,5 @@
-package uz.msit.demo.users.presentation.user_list
+package uz.msit.demo.users.presentation.user_list.components
 
-import uz.msit.demo.R
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
@@ -30,7 +29,6 @@ fun UserItem(
     ) {
         AsyncImage(
             model = user.avatar_url,
-            placeholder = painterResource(R.drawable.ic_launcher_foreground),
             contentDescription = "user_photo",
             modifier = Modifier
                 .size(70.dp)

@@ -19,19 +19,17 @@ import uz.msit.demo.users.MainCoroutineRule
 import uz.msit.demo.users.data.remote.service.UserService
 import uz.msit.demo.users.domain.failure.GetUsersFailure
 import uz.msit.demo.users.domain.model.User
+import uz.msit.demo.users.domain.model.UserDetails
+import uz.msit.demo.utils.TestData
 import java.io.IOException
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(MockitoJUnitRunner::class)
 internal class UserRemoteDataSourceImplTest {
-
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
-
     @Mock
     private lateinit var mockService: UserService
-
-
     private lateinit var sut: UserRemoteDataSourceImpl
 
     @Before
@@ -41,12 +39,9 @@ internal class UserRemoteDataSourceImplTest {
     }
 
     @Test
-    fun `when response success should return correct user list_123`() = runTest {
-        val expected = listOf(
-            User(1, "mojombo", "https://avatars.githubusercontent.com/u/1?v=4"),
-            User(3, "pjhyett", "https://avatars.githubusercontent.com/u/3?v=4")
-        )
-        given(mockService.getUsers()).willAnswer{Response.success(200, expected)}
+    fun `did getUsers on success return correct list`() = runTest {
+        val expected = TestData.testUsers
+        given(mockService.getUsers()).willAnswer { Response.success(200, expected) }
 
         val response = sut.getUsers()
 
@@ -54,9 +49,9 @@ internal class UserRemoteDataSourceImplTest {
     }
 
     @Test
-    fun `when request throw exception should return failure`() = runTest {
+    fun `did getUsers on failure will throw exception`() = runTest {
         val exception = GetUsersFailure.UnknownError
-        given(mockService.getUsers()).willAnswer { (Response.error<Exception>(500, ResponseBody.create(null,  ""))) }
+        given(mockService.getUsers()).willAnswer { (Response.error<List<User>>(500, ResponseBody.create(null, ""))) }
 
         val response = runCatching { sut.getUsers() }
 
@@ -64,12 +59,48 @@ internal class UserRemoteDataSourceImplTest {
     }
 
     @Test
-    fun `when throw ioException should throw correct exception`() = runTest {
+    fun `did getUsers on ioException will throw exception`() = runTest {
         val exception = GetUsersFailure.NoNetworkConnection
         given(mockService.getUsers()).willAnswer { throw IOException() }
 
         val response = runCatching { sut.getUsers() }
 
-        assertEquals(response.exceptionOrNull(), exception)
+        assertEquals(exception, response.exceptionOrNull())
+    }
+
+    @Test
+    fun `did getUserDetails on success return correct details`() = runTest {
+        val expected = TestData.testUserDetails
+        given(mockService.getUserDetails(expected.login))
+            .willAnswer { Response.success(200, expected) }
+
+        val response = sut.getUserDetails(expected.login)
+
+        assertEquals(expected, response)
+    }
+
+    @Test
+    fun `did getUserDetails on failure will throw exception`() = runTest {
+        val exception = GetUsersFailure.UnknownError
+        val userDetails = TestData.testUserDetails
+        given(mockService.getUserDetails(userDetails.login))
+            .willAnswer {
+                (Response.error<UserDetails>(500, ResponseBody.create(null, "")))
+            }
+
+        val response = runCatching { sut.getUserDetails(userDetails.login) }
+
+        assertEquals(exception, response.exceptionOrNull())
+    }
+
+    @Test
+    fun `did getUserDetails on ioException will throw exception`() = runTest {
+        val exception = GetUsersFailure.NoNetworkConnection
+        val userDetails = TestData.testUserDetails
+        given(mockService.getUserDetails(userDetails.login)).willAnswer { throw IOException() }
+
+        val response = runCatching { sut.getUserDetails(userDetails.login) }
+
+        assertEquals(exception, response.exceptionOrNull())
     }
 }

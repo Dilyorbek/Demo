@@ -16,8 +16,8 @@ import uz.msit.demo.core.utils.Left
 import uz.msit.demo.core.utils.Right
 import uz.msit.demo.users.MainCoroutineRule
 import uz.msit.demo.users.domain.failure.GetUsersFailure
-import uz.msit.demo.users.domain.model.User
 import uz.msit.demo.users.domain.repository.UserRepository
+import uz.msit.demo.utils.TestData
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
@@ -25,14 +25,11 @@ internal class UsersViewModelTest {
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
-
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
-
     @Mock
     private lateinit var mockRepository: UserRepository
     private lateinit var fakeUsersUseCase: FakeGetUsersUseCase
-
     private lateinit var sut: UsersViewModel
 
     @Before
@@ -43,32 +40,23 @@ internal class UsersViewModelTest {
     }
 
     @Test
-    fun `viewModel shows initial state`() = runTest {
-        sut = UsersViewModel(fakeUsersUseCase)
+    fun `did shows initial state`() = runTest {
         val expectedState = UsersState(isLoading = true)
 
-        // Get the initial state
-        val state = sut.state.value
-
-        assertEquals(expectedState, state)
+        assertEquals(expectedState, sut.state.value)
     }
 
     @Test
-    fun `viewModel shows users state when result success`() = runTest {
-
-        val users = listOf(User(1, "sasa", "vava"), User(2, "vava", "dada"))
-
-        // Get the initial state
-
+    fun `did shows users when result success`() = runTest {
         launch {
-            fakeUsersUseCase.emit(Right(users))
+            fakeUsersUseCase.emit(Right(TestData.testUsers))
         }.join()
 
-        assertEquals(UsersState(users), sut.state.value)
+        assertEquals(UsersState(TestData.testUsers), sut.state.value)
     }
 
     @Test
-    fun `viewModel shows error state when result error`() = runTest {
+    fun `did shows error state when result failure`() = runTest {
         val expectedState = UsersState(isLoading = false, message = "No network connection!")
 
         launch {

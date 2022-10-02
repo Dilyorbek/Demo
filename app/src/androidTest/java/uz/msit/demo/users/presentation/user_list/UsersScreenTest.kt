@@ -41,7 +41,7 @@ class UsersScreenTest {
 
     @Test
     fun did_users_will_displayed() {
-        fakeUsersViewModel.setState(UsersState(users = testUsers))
+        fakeUsersViewModel.setState(UsersState(testUsers))
 
         composeTestRule.onNodeWithTag("UserList").assertIsDisplayed()
     }

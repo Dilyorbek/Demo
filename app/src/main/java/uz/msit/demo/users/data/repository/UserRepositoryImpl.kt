@@ -9,16 +9,23 @@ import uz.msit.demo.users.domain.failure.GetUsersFailure
 import uz.msit.demo.users.domain.model.User
 import uz.msit.demo.users.domain.repository.UserRepository
 import uz.msit.demo.users.data.remote.data_source.UserRemoteDataSource
+import uz.msit.demo.users.domain.model.UserDetails
 import javax.inject.Inject
 
-class UserRepositoryImpl @Inject constructor(private val remoteDataSource: UserRemoteDataSource): UserRepository {
-    override fun getUsers(): Flow<Either<GetUsersFailure, List<User>>>  = flow {
+class UserRepositoryImpl @Inject constructor(private val remoteDataSource: UserRemoteDataSource) : UserRepository {
+    override fun getUsers(): Flow<Either<GetUsersFailure, List<User>>> = flow {
         try {
-           emit(Right(remoteDataSource.getUsers()))
+            emit(Right(remoteDataSource.getUsers()))
         } catch (ex: GetUsersFailure) {
             emit(Left(ex))
         }
-        Result.success(emptyList<User>())
-        Result.failure<GetUsersFailure>(GetUsersFailure.UnknownError)
+    }
+
+    override fun getUserDetails(login: String): Flow<Either<GetUsersFailure, UserDetails>> = flow {
+        try {
+            emit(Right(remoteDataSource.getUserDetails(login)))
+        } catch (ex: GetUsersFailure) {
+            emit(Left(ex))
+        }
     }
 }

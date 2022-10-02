@@ -6,12 +6,8 @@ import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.MockitoAnnotations
 import uz.msit.demo.users.domain.model.User
-import uz.msit.demo.users.presentation.user_list.FakeUsersViewModel
-import uz.msit.demo.users.presentation.user_list.UserItem
 import uz.msit.demo.users.presentation.user_list.UserList
-import uz.msit.demo.users.presentation.user_list.UsersScreen
 
 class UserListTest {
 

@@ -23,13 +23,12 @@ open class UsersViewModel @Inject constructor(private val getUsersUseCase: GetUs
         onEvent(UsersEvent.GetAll)
     }
 
-    open fun onEvent(event: UsersEvent) {
-        when (event) {
-            is UsersEvent.GetAll -> {
-                getUsers()
-            }
+    open fun onEvent(event: UsersEvent) = when (event) {
+        is UsersEvent.GetAll -> {
+            getUsers()
         }
     }
+
 
     private fun getUsers() {
         getUsersJob?.cancel()
@@ -39,7 +38,7 @@ open class UsersViewModel @Inject constructor(private val getUsersUseCase: GetUs
                 it.fold({
                     _state.value = _state.value.copy(message = "No network connection!", isLoading = false)
                 }, { users ->
-                    _state.value = state.value.copy(users = users, message = null, isLoading = false)
+                    _state.value = state.value.copy(users, null, false)
                 })
             }
             .launchIn(viewModelScope)

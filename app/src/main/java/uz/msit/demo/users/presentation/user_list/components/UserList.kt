@@ -1,6 +1,5 @@
 package uz.msit.demo.users.presentation.user_list
 
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import timber.log.Timber
 import uz.msit.demo.users.domain.model.User
+import uz.msit.demo.users.presentation.user_list.components.UserItem
 
 @Composable
 fun UserList(

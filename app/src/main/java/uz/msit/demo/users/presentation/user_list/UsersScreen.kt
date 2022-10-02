@@ -28,8 +28,8 @@ fun UsersScreen(
     Scaffold(
         scaffoldState = scaffoldState
     ) {
-        if (state.users.isNotEmpty()) {
-            UserList(state.users, onItemClick = {
+        if (state.data.isNotEmpty()) {
+            UserList(state.data, onItemClick = {
                 navigateToDetails(it.login)
             })
         } else if (state.isLoading) {

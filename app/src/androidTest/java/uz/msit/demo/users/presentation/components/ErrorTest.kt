@@ -1,17 +1,12 @@
 package uz.msit.demo.users.presentation.components
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import uz.msit.demo.users.domain.model.User
-import uz.msit.demo.users.presentation.user_list.UserItem
-import uz.msit.demo.users.presentation.user_list.UserList
 
 class ErrorTest {
 

@@ -6,6 +6,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import okhttp3.mockwebserver.RecordedRequest
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -17,14 +19,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import uz.msit.demo.users.MainCoroutineRule
 import uz.msit.demo.users.data.remote.service.UserService
 import uz.msit.demo.users.domain.model.User
+import uz.msit.demo.utils.TestData
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(MockitoJUnitRunner::class)
 internal class UserServiceTest {
-
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
-
     @get:Rule
     val mockWebServer = MockWebServer()
 
@@ -36,61 +37,90 @@ internal class UserServiceTest {
             .create(UserService::class.java)
     }
 
-    private val testJson = """
-            [
-                {"id": 1, "login": "mojombo", "avatar_url": "https://avatars.githubusercontent.com/u/1?v=4"},
-                {"id": 3, "login": "pjhyett", "avatar_url": "https://avatars.githubusercontent.com/u/3?v=4"}
-            ]
-            """
-
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
     }
 
-    @Test
-    fun `get users has correct endpoint`() = runTest {
+    @After
+    fun teardown() {
+        mockWebServer.shutdown()
+    }
 
+    @Test
+    fun `did getUsers has correct endpoint`() = runTest {
         mockWebServer.enqueue(
             MockResponse()
-                .setBody(testJson)
+                .setBody(TestData.testUsersJson)
                 .setResponseCode(200)
         )
-
-        val response = userService.getUsers()
-        assertTrue(response.isSuccessful)
+        userService.getUsers()
 
         assertEquals("/users", mockWebServer.takeRequest().path)
     }
 
     @Test
-    fun `get users when response code 200`() = runTest {
-        val userList = listOf(
-            User(1, "mojombo", "https://avatars.githubusercontent.com/u/1?v=4"),
-            User(3, "pjhyett", "https://avatars.githubusercontent.com/u/3?v=4")
-        )
+    fun `did getUsers on success return correct list`() = runTest {
+        val expected = TestData.testUsers
 
         mockWebServer.enqueue(
             MockResponse()
-                .setBody(testJson)
+                .setBody(TestData.testUsersJson)
                 .setResponseCode(200)
         )
 
         val response = userService.getUsers()
-        assertTrue(response.isSuccessful)
 
-        assertEquals(response.body(), userList)
+        assertTrue(response.isSuccessful)
+        assertEquals(response.body(), expected)
     }
 
     @Test
-    fun `get users when response code not 200`() = runTest {
-
+    fun `did getUsers on failure response unsuccessful`() = runTest {
         mockWebServer.enqueue(
-            MockResponse()
-                .setResponseCode(404)
+            MockResponse().setResponseCode(404)
         )
 
         val response = userService.getUsers()
+        assertFalse(response.isSuccessful)
+    }
+
+    @Test
+    fun `did getUserDetails has correct endpoint`() = runTest {
+        val expected = TestData.testUserDetails
+        mockWebServer.enqueue(
+            MockResponse()
+                .setBody(TestData.testUserDetailsJson)
+                .setResponseCode(200)
+        )
+
+        userService.getUserDetails(expected.login)
+
+        assertEquals("/users/technoweenie", mockWebServer.takeRequest().path)
+    }
+
+    @Test
+    fun `did getUserDetails on success return correct details`() = runTest {
+        val expected = TestData.testUserDetails
+        mockWebServer.enqueue(
+            MockResponse()
+                .setBody(TestData.testUserDetailsJson)
+                .setResponseCode(200)
+        )
+
+        val response = userService.getUserDetails(expected.login)
+
+        assertTrue(response.isSuccessful)
+        assertEquals(expected, response.body())
+    }
+
+    @Test
+    fun `did getUserDetails  on failure response unsuccessful`() = runTest {
+        val expected = TestData.testUserDetails
+        mockWebServer.enqueue(MockResponse().setResponseCode(404))
+
+        val response = userService.getUserDetails(expected.login)
+
         assertFalse(response.isSuccessful)
     }
 }

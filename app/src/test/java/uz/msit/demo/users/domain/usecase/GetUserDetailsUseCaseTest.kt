@@ -1,11 +1,11 @@
 package uz.msit.demo.users.domain.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import app.cash.turbine.test
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.last
-import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -23,11 +23,13 @@ import uz.msit.demo.core.utils.right
 import uz.msit.demo.users.MainCoroutineRule
 import uz.msit.demo.users.domain.failure.GetUsersFailure
 import uz.msit.demo.users.domain.model.User
+import uz.msit.demo.users.domain.model.UserDetails
 import uz.msit.demo.users.domain.repository.UserRepository
+import uz.msit.demo.utils.TestData
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(MockitoJUnitRunner::class)
-internal class GetUsersUseCaseTest {
+internal class GetUserDetailsUseCaseTest {
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -37,33 +39,34 @@ internal class GetUsersUseCaseTest {
 
     @Mock
     private lateinit var mockRepository: UserRepository
-    private lateinit var sut: GetUsersUseCase
+    private lateinit var sut: GetUserDetailsUseCase
+
+    private val userDetails = TestData.testUserDetails
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        sut = GetUsersUseCase(mockRepository)
+        sut = GetUserDetailsUseCase(mockRepository)
     }
 
     @Test
     fun `when success should return correct users`() = runTest {
-        val users = listOf(User(1, "sasa", "vava"), User(2, "vava", "dada"))
-        given(mockRepository.getUsers()).willReturn(flow { emit(Right(users)) })
+        given(mockRepository.getUserDetails(userDetails.login)).willReturn(flow { emit(Right(userDetails)) })
 
-        val response = sut().single().right()
+        val response = sut(userDetails.login).last().right()
 
-        Mockito.verify(mockRepository, Mockito.times(1)).getUsers()
-        assertEquals(response, users)
+        Mockito.verify(mockRepository, Mockito.times(1)).getUserDetails(userDetails.login)
+        assertEquals(userDetails, response)
     }
 
     @Test
     fun `when failure should return failure`() = runTest {
-        val failure = GetUsersFailure.UnknownError
-        given(mockRepository.getUsers()).willReturn(flow { emit(Left(failure)) })
+        val expected = GetUsersFailure.UnknownError
+        given(mockRepository.getUserDetails(userDetails.login)).willReturn(flow { emit(Left(expected)) })
 
-        val response = sut().single().left()
+        val response =  sut(userDetails.login).first().left()
 
-        Mockito.verify(mockRepository, Mockito.times(1)).getUsers()
-        assertEquals(response, failure)
+        Mockito.verify(mockRepository, Mockito.times(1)).getUserDetails(userDetails.login)
+        assertEquals(expected, response)
     }
 }
