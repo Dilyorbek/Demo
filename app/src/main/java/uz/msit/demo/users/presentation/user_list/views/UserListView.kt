@@ -1,4 +1,4 @@
-package uz.msit.demo.users.presentation.user_list
+package uz.msit.demo.users.presentation.user_list.views
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,10 +11,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import timber.log.Timber
 import uz.msit.demo.users.domain.model.User
-import uz.msit.demo.users.presentation.user_list.components.UserItem
 
 @Composable
-fun UserList(
+fun UserListView(
     users: List<User> = emptyList(),
     onItemClick: (user: User) -> Unit,
     modifier: Modifier = Modifier.testTag("UserList")
@@ -24,7 +23,7 @@ fun UserList(
     ) {
         items(users.size) { i ->
             val user = users[i]
-            UserItem(
+            UserItemView(
                 user = user,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -42,9 +41,9 @@ fun UserList(
 
 @Preview
 @Composable
-fun UserListPreview() {
+fun UserListViewPreview() {
     val users = listOf(User(1, "sasa", "vava"), User(2, "vava", "dada"))
-    UserList(users, {
+    UserListView(users, {
         Timber.d("Item:${it.login}")
     })
 }

@@ -1,4 +1,4 @@
-package uz.msit.demo.users.presentation.user_list.components
+package uz.msit.demo.users.presentation.user_list.views
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -9,7 +9,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,7 +18,7 @@ import coil.compose.AsyncImage
 import uz.msit.demo.users.domain.model.User
 
 @Composable
-fun UserItem(
+fun UserItemView(
     user: User,
     modifier: Modifier = Modifier.testTag("UserItem")
 ) {
@@ -49,6 +48,6 @@ fun UserItem(
 
 @Preview
 @Composable
-fun UserItemPreview() {
-    UserItem(user = User(0, "dilyorbek", "hkjhkjhjkhj"))
+fun UserItemViewPreview() {
+    UserItemView(user = User(0, "dilyorbek", "hkjhkjhjkhj"))
 }

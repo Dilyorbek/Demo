@@ -9,7 +9,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun Loading(
+fun LoadingView(
     modifier: Modifier = Modifier.testTag("Loading")
 ) {
     Box(
@@ -22,6 +22,6 @@ fun Loading(
 
 @Preview
 @Composable
-fun LoadingPreview() {
-    Loading()
+fun LoadingViewPreview() {
+    LoadingView()
 }

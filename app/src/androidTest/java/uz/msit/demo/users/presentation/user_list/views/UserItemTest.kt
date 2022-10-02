@@ -1,4 +1,4 @@
-package uz.msit.demo.users.presentation.user_list.components
+package uz.msit.demo.users.presentation.user_list.views
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -16,7 +16,7 @@ class UserItemTest {
 
     @Before
     fun setUp() {
-        composeTestRule.setContent { UserItem(user = user) }
+        composeTestRule.setContent { UserItemView(user = user) }
     }
 
     @Test

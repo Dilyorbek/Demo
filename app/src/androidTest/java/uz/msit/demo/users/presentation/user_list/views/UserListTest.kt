@@ -1,4 +1,4 @@
-package uz.msit.demo.users.presentation.user_list.components
+package uz.msit.demo.users.presentation.user_list.views
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -7,7 +7,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import uz.msit.demo.users.domain.model.User
-import uz.msit.demo.users.presentation.user_list.UserList
 
 class UserListTest {
 
@@ -19,7 +18,7 @@ class UserListTest {
 
     @Before
     fun setup() {
-        composeTestRule.setContent { UserList(testUsers, onItemClick = { clickedItem = it }) }
+        composeTestRule.setContent { UserListView(testUsers, onItemClick = { clickedItem = it }) }
     }
 
     @Test

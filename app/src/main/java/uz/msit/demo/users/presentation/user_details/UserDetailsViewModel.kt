@@ -27,20 +27,19 @@ open class UserDetailsViewModel @Inject constructor(
 
     private val _state = mutableStateOf(UserDetailsState())
     open val state: State<UserDetailsState> = _state
+    private var login: String = savedStateHandle.get<String>("login")?:""
 
     init {
-        savedStateHandle.get<String>("login")?.let { login ->
-            onEvent(UserDetailsEvent.GetUserDetails(login))
-        }
+        onEvent(UserDetailsEvent.GetUserDetails)
     }
 
     open fun onEvent(event: UserDetailsEvent) = when (event) {
         is UserDetailsEvent.GetUserDetails -> {
-            getUserDetails(event.login)
+            getUserDetails()
         }
     }
 
-    private fun getUserDetails(login: String) {
+    private fun getUserDetails() {
         _state.value = _state.value.copy(isLoading = true, message = null)
         viewModelScope.launch {
             getUserDetailsUseCase(login).first().fold(

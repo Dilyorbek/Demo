@@ -1,16 +1,16 @@
-package uz.msit.demo.users.presentation.user_list
+package uz.msit.demo.users.presentation.user_details
 
-import androidx.compose.material.*
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import uz.msit.demo.users.presentation.components.ErrorView
 import uz.msit.demo.users.presentation.components.LoadingView
-import uz.msit.demo.users.presentation.user_list.views.UserListView
 
 @Composable
-fun UsersScreen(
+fun UserDetailsScreen(
     navigateToDetails: (userId: String) -> Unit,
-    viewModel: UsersViewModel = hiltViewModel()
+    viewModel: UserDetailsViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
@@ -18,18 +18,19 @@ fun UsersScreen(
     Scaffold(
         scaffoldState = scaffoldState
     ) {
-        if (state.data.isNotEmpty()) {
-            UserListView(state.data, onItemClick = {
-                navigateToDetails(it.login)
-            })
+        if (state.data != null) {
+//            UserDetails
+//            (state.data, onItemClick = {
+//                navigateToDetails(it.login)
+//            })
         } else if (state.isLoading) {
             LoadingView()
-        } else if (!state.message.isNullOrEmpty()){
+        } else if (!state.message.isNullOrEmpty()) {
             ErrorView(
                 state.message!!,
                 "Retry",
                 onButtonClick = {
-                    viewModel.onEvent(UsersEvent.GetAll)
+                    viewModel.onEvent(UserDetailsEvent.GetUserDetails)
                 }
             )
         }

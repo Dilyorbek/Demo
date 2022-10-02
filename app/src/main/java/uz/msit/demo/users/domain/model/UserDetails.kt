@@ -9,3 +9,5 @@ data class UserDetails(
     val followers: Int,
     val following: Int
 )
+
+

@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import timber.log.Timber
 
 @Composable
-fun Error(
+fun ErrorView(
     message: String,
     buttonText: String,
     onButtonClick: () -> Unit,
@@ -48,8 +48,8 @@ fun Error(
 
 @Preview
 @Composable
-fun ErrorPreview() {
-    Error(
+fun ErrorViewPreview() {
+    ErrorView(
         "Unknown  error!",
         "Retry",
         onButtonClick = {
