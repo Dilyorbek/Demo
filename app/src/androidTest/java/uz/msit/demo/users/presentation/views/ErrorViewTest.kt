@@ -1,4 +1,4 @@
-package uz.msit.demo.users.presentation.components
+package uz.msit.demo.users.presentation.views
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -8,7 +8,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class ErrorTest {
+class ErrorViewTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -19,7 +19,7 @@ class ErrorTest {
 
     @Before
     fun setUp() {
-        composeTestRule.setContent { Error(message = message, buttonText, { isButtonClickCalled = true }) }
+        composeTestRule.setContent { ErrorView(message = message, buttonText, { isButtonClickCalled = true }) }
     }
 
     @Test

@@ -1,4 +1,4 @@
-package uz.msit.demo.users.presentation.components
+package uz.msit.demo.users.presentation.views
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -6,14 +6,14 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class LoadingTest {
+class LoadingViewTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Before
     fun setUp() {
-        composeTestRule.setContent { Loading() }
+        composeTestRule.setContent { LoadingView() }
     }
 
     @Test

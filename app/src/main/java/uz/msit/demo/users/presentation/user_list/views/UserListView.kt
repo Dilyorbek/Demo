@@ -8,15 +8,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import timber.log.Timber
 import uz.msit.demo.users.domain.model.User
+import uz.msit.demo.users.presentation.preview_param_provider.UserProvider
 
 @Composable
 fun UserListView(
     users: List<User> = emptyList(),
     onItemClick: (user: User) -> Unit,
-    modifier: Modifier = Modifier.testTag("UserList")
+    modifier: Modifier = Modifier.testTag("UserListView")
 ) {
     LazyColumn(
         modifier = modifier
@@ -41,8 +43,7 @@ fun UserListView(
 
 @Preview
 @Composable
-fun UserListViewPreview() {
-    val users = listOf(User(1, "sasa", "vava"), User(2, "vava", "dada"))
+fun UserListViewPreview(@PreviewParameter(UserProvider::class) users: List<User>) {
     UserListView(users, {
         Timber.d("Item:${it.login}")
     })

@@ -1,4 +1,4 @@
-package uz.msit.demo.users.domain.util
+package uz.msit.demo.users.presentation.preview_param_provider
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import uz.msit.demo.users.domain.model.User

@@ -1,0 +1,50 @@
+package uz.msit.demo.users.presentation.user_details.views
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Divider
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
+import uz.msit.demo.users.domain.model.UserDetails
+import uz.msit.demo.users.presentation.preview_param_provider.UserDetailsProvider
+
+@Composable
+fun UserDetailsListView(
+    items: List<Pair<String, String>> = emptyList(),
+    modifier: Modifier = Modifier.testTag("UserDetailsListView")
+) {
+    LazyColumn(
+        modifier = modifier
+    ) {
+        items(items.size) { i ->
+            val item = items[i]
+            UserDetailsItemView(
+                item = item,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            )
+            if (i < items.size) {
+                Divider(modifier = Modifier.padding(horizontal = 16.dp))
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun UserDetailsListViewPreview(@PreviewParameter(UserDetailsProvider::class) userDetails: UserDetails) {
+    val items = listOf(
+        Pair("Repos", userDetails.public_repos.toString()),
+        Pair("Gists", userDetails.public_gists.toString()),
+        Pair("Followers", userDetails.followers.toString()),
+        Pair("Following", userDetails.following.toString())
+    )
+    UserDetailsListView(items = items)
+}

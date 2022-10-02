@@ -1,10 +1,12 @@
 package uz.msit.demo.users.presentation.user_list
 
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import uz.msit.demo.users.presentation.components.ErrorView
-import uz.msit.demo.users.presentation.components.LoadingView
+import uz.msit.demo.users.presentation.views.ErrorView
+import uz.msit.demo.users.presentation.views.LoadingView
 import uz.msit.demo.users.presentation.user_list.views.UserListView
 
 @Composable
@@ -16,6 +18,9 @@ fun UsersScreen(
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
+        topBar = {
+            TopAppBar(title = { Text(text = "Users") })
+        },
         scaffoldState = scaffoldState
     ) {
         if (state.data.isNotEmpty()) {

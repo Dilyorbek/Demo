@@ -43,7 +43,7 @@ class UsersScreenTest {
     fun did_users_will_displayed() {
         fakeUsersViewModel.setState(UsersState(testUsers))
 
-        composeTestRule.onNodeWithTag("UserList").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("UserListVView").assertIsDisplayed()
     }
 
     @Test
@@ -57,7 +57,7 @@ class UsersScreenTest {
     fun did_error_will_displayed() {
         fakeUsersViewModel.setState(UsersState(message = "Error message"))
 
-        composeTestRule.onNodeWithTag("Error").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("ErrorView").assertIsDisplayed()
     }
 
     @Test

@@ -1,4 +1,4 @@
-package uz.msit.demo.users.presentation.components
+package uz.msit.demo.users.presentation.views
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -20,7 +20,7 @@ fun ErrorView(
     message: String,
     buttonText: String,
     onButtonClick: () -> Unit,
-    modifier: Modifier = Modifier.testTag("Error")
+    modifier: Modifier = Modifier.testTag("ErrorView")
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),

@@ -1,4 +1,4 @@
-package uz.msit.demo.users.presentation.components
+package uz.msit.demo.users.presentation.views
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun LoadingView(
-    modifier: Modifier = Modifier.testTag("Loading")
+    modifier: Modifier = Modifier.testTag("LoadingView")
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),

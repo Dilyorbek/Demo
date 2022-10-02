@@ -9,6 +9,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
+import uz.msit.demo.BuildConfig
 import uz.msit.demo.core.utils.ApiEndpoint
 import uz.msit.demo.users.data.remote.data_source.UserRemoteDataSource
 import uz.msit.demo.users.data.remote.data_source.UserRemoteDataSourceImpl
@@ -26,7 +27,13 @@ object AppModule {
     @Provides
     fun provideUserService(): UserService {
         val client = OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor { message -> Timber.d("HTTP: $message") }.apply { level = HttpLoggingInterceptor.Level.BODY })
+            .addInterceptor(
+                HttpLoggingInterceptor { message ->
+                    Timber.d("HTTP: $message")
+                }.apply {
+                    level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+                    else HttpLoggingInterceptor.Level.NONE
+                })
             .build()
 
         return Retrofit.Builder()
@@ -39,19 +46,16 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideUserRemoteDataSource(userService: UserService): UserRemoteDataSource {
-        return UserRemoteDataSourceImpl(userService)
-    }
+    fun provideUserRemoteDataSource(userService: UserService): UserRemoteDataSource =
+        UserRemoteDataSourceImpl(userService)
+
 
     @Singleton
     @Provides
-    fun provideUserRepository(remoteDataSource: UserRemoteDataSource): UserRepository {
-        return UserRepositoryImpl(remoteDataSource)
-    }
+    fun provideUserRepository(remoteDataSource: UserRemoteDataSource): UserRepository =
+        UserRepositoryImpl(remoteDataSource)
 
     @Singleton
     @Provides
-    fun provideUseCase(repository: UserRepository): GetUsersUseCase {
-        return GetUsersUseCase(repository)
-    }
+    fun provideUseCase(repository: UserRepository) = GetUsersUseCase(repository)
 }
