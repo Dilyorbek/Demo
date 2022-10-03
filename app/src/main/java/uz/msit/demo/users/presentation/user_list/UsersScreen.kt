@@ -5,6 +5,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import uz.msit.demo.users.presentation.views.ErrorView
 import uz.msit.demo.users.presentation.views.LoadingView
 import uz.msit.demo.users.presentation.user_list.views.UserListView
@@ -16,6 +18,7 @@ fun UsersScreen(
 ) {
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
+    val swipeRefreshState = rememberSwipeRefreshState(state.isLoading)
 
     Scaffold(
         topBar = {
@@ -23,13 +26,19 @@ fun UsersScreen(
         },
         scaffoldState = scaffoldState
     ) {
-        if (state.data.isNotEmpty()) {
-            UserListView(state.data, onItemClick = {
-                navigateToDetails(it.login)
-            })
-        } else if (state.isLoading) {
-            LoadingView()
-        } else if (!state.message.isNullOrEmpty()){
+        SwipeRefresh(
+            state = swipeRefreshState,
+            swipeEnabled = state.message.isNullOrEmpty(),
+            onRefresh = { viewModel.onEvent(UsersEvent.GetAll) },
+        ) {
+            UserListView(
+                state.data,
+                onItemClick = { navigateToDetails(it.login) },
+                swipeRefreshState.isRefreshing
+            )
+        }
+
+        if (!state.message.isNullOrEmpty()) {
             ErrorView(
                 state.message!!,
                 "Retry",

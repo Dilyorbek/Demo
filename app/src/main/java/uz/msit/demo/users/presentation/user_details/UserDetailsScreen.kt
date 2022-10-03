@@ -5,7 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import uz.msit.demo.users.presentation.user_details.views.UserDetailsView
+import uz.msit.demo.users.presentation.user_details.views.UserDetailsListView
 import uz.msit.demo.users.presentation.views.ErrorView
 import uz.msit.demo.users.presentation.views.LoadingView
 
@@ -33,7 +33,7 @@ fun UserDetailsScreen(
         scaffoldState = scaffoldState
     ) {
         if (state.data != null) {
-            UserDetailsView(state.data!!)
+            UserDetailsListView(state.data!!)
         } else if (state.isLoading) {
             LoadingView()
         } else if (!state.message.isNullOrEmpty()) {

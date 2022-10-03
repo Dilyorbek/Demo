@@ -9,28 +9,44 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import uz.msit.demo.users.domain.model.User
+import uz.msit.demo.users.domain.model.UserDetails
+import uz.msit.demo.users.presentation.preview_param_provider.UserDetailsProvider
 
 class UserDetailsListViewTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val testItems = listOf(
-        Pair("Repos", "64"),
-        Pair("Gists", "62"),
-        Pair("Followers", "1233"),
-        Pair("Following", "11")
+    private val testUserDetails = UserDetails(
+        1,
+        "mojombo",
+        "https://avatars.githubusercontent.com/u/1?v=4",
+        64,
+        62,
+        23194,
+        11
     )
+
 
     @Before
     fun setup() {
-        composeTestRule.setContent { UserDetailsListView(testItems) }
+        composeTestRule.setContent { UserDetailsListView(testUserDetails) }
     }
 
     @Test
     fun did_display_details() {
-        composeTestRule.onNodeWithTag("UserDetailsListView")
+        composeTestRule.onNodeWithTag("UserDetailsHeaderView").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("UserDetailsItemView")
             .onChildren()
-            .assertCountEquals(testItems.size)
+            .assertCountEquals(4)
+
+        composeTestRule.onNodeWithTag("Repos").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("Repos").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("Gists").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("Followers").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("64").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("62").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("23194").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("11").assertIsDisplayed()
     }
 }

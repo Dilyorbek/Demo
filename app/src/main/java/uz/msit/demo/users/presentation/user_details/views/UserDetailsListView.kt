@@ -16,21 +16,31 @@ import uz.msit.demo.users.presentation.preview_param_provider.UserDetailsProvide
 
 @Composable
 fun UserDetailsListView(
-    items: List<Pair<String, String>> = emptyList(),
+    userDetails: UserDetails,
     modifier: Modifier = Modifier.testTag("UserDetailsListView")
 ) {
+    val items = listOf(
+        Pair("Repos", userDetails.public_repos.toString()),
+        Pair("Gists", userDetails.public_gists.toString()),
+        Pair("Followers", userDetails.followers.toString()),
+        Pair("Following", userDetails.following.toString())
+    )
+
     LazyColumn(
-        modifier = modifier
+        modifier = modifier.fillMaxWidth(),
     ) {
-        items(items.size) { i ->
-            val item = items[i]
-            UserDetailsItemView(
-                item = item,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            )
-            if (i < items.size) {
+        items(items.size + 1) { i ->
+            if (i == 0) {
+                UserDetailsHeaderView(userDetails.login, userDetails.avatar_url)
+            } else {
+                UserDetailsItemView(
+                    item = items[i - 1],
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                )
+            }
+            if (i <= items.size) {
                 Divider(modifier = Modifier.padding(horizontal = 16.dp))
             }
         }
@@ -40,11 +50,5 @@ fun UserDetailsListView(
 @Preview
 @Composable
 fun UserDetailsListViewPreview(@PreviewParameter(UserDetailsProvider::class) userDetails: UserDetails) {
-    val items = listOf(
-        Pair("Repos", userDetails.public_repos.toString()),
-        Pair("Gists", userDetails.public_gists.toString()),
-        Pair("Followers", userDetails.followers.toString()),
-        Pair("Following", userDetails.following.toString())
-    )
-    UserDetailsListView(items = items)
+    UserDetailsListView(userDetails = userDetails)
 }

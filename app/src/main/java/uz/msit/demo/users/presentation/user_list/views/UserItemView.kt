@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,12 +18,16 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.placeholder
+import com.google.accompanist.placeholder.material.shimmer
 import uz.msit.demo.users.domain.model.User
 import uz.msit.demo.users.presentation.preview_param_provider.UserProvider
 
 @Composable
 fun UserItemView(
     user: User,
+    isPlaceholderVisible: Boolean = false,
     modifier: Modifier = Modifier.testTag("UserItemView")
 ) {
     Row(
@@ -39,6 +44,9 @@ fun UserItemView(
                     width = 1.dp,
                     color = MaterialTheme.colors.onBackground,
                     shape = CircleShape
+                ).placeholder(
+                    visible = isPlaceholderVisible,
+                    highlight = PlaceholderHighlight.shimmer(),
                 )
         )
         Spacer(modifier = Modifier.width(8.dp))
@@ -49,7 +57,12 @@ fun UserItemView(
             color = MaterialTheme.colors.onBackground,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .placeholder(
+                    visible = isPlaceholderVisible,
+                    highlight = PlaceholderHighlight.shimmer(),
+                )
         )
     }
 }

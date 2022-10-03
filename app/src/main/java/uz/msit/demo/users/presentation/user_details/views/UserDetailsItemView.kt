@@ -35,7 +35,6 @@ fun UserDetailsItemView(
             modifier = Modifier.weight(1f)
         )
         Spacer(modifier = Modifier.width(8.dp))
-
         Text(
             text = item.second,
             fontWeight = FontWeight.Normal,

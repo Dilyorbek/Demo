@@ -4,9 +4,12 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import uz.msit.demo.core.utils.fold
 import uz.msit.demo.users.domain.usecase.GetUsersUseCase
 import javax.inject.Inject
@@ -29,18 +32,18 @@ open class UsersViewModel @Inject constructor(private val getUsersUseCase: GetUs
         }
     }
 
-
     private fun getUsers() {
         getUsersJob?.cancel()
-        _state.value = _state.value.copy(isLoading = true, message = null)
-        getUsersJob = getUsersUseCase()
-            .onEach { it ->
-                it.fold({
-                    _state.value = _state.value.copy(message = "No network connection!", isLoading = false)
-                }, { users ->
-                    _state.value = state.value.copy(users, null, false)
-                })
-            }
-            .launchIn(viewModelScope)
+        _state.value = _state.value.copy(message = null, isLoading = true)
+        getUsersJob = viewModelScope.launch {
+            getUsersUseCase()
+                .collect {
+                    it.fold({
+                        _state.value = _state.value.copy(message = "No network connection!", isLoading = false)
+                    }, { users ->
+                        _state.value = state.value.copy(data = users, message = null, isLoading = false)
+                    })
+                }
+        }
     }
 }

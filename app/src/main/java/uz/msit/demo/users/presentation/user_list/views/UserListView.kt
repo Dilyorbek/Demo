@@ -18,6 +18,7 @@ import uz.msit.demo.users.presentation.preview_param_provider.UserProvider
 fun UserListView(
     users: List<User> = emptyList(),
     onItemClick: (user: User) -> Unit,
+    isPlaceholderVisible: Boolean = false,
     modifier: Modifier = Modifier.testTag("UserListView")
 ) {
     LazyColumn(
@@ -27,6 +28,7 @@ fun UserListView(
             val user = users[i]
             UserItemView(
                 user = user,
+                isPlaceholderVisible = isPlaceholderVisible,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
