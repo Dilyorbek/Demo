@@ -1,7 +1,7 @@
 package uz.msit.demo.utils
 
-import uz.msit.demo.users.domain.model.User
-import uz.msit.demo.users.domain.model.UserDetails
+import uz.msit.demo.feature.users.domain.model.User
+import uz.msit.demo.feature.users.domain.model.UserDetails
 
 object TestData {
     const val testUsersJson = """[
